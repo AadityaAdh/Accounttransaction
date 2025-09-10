@@ -1,0 +1,61 @@
+syntax="proto3";
+
+package accounttransaction;
+
+option go_package = "/transactionprotogen";
+
+
+
+message Transactionmsg{
+    int32 transactionid=1;
+    int32 account_id=2;
+    int32 amount=3;
+    string type=4;
+
+
+}
+
+message Updatetransactionmsg{
+    int32 transactionid=1;
+    string tokenstring=5;
+
+    optional int32 amount=2;
+    optional string type=3;
+
+}
+
+
+message Deletetransactionmsg{
+    int32 transactionid=1;
+    string tokenstring=2;
+
+}
+
+message transactionaddedmsg{
+    string tokenstring=1;
+    string message=2;
+}
+
+message transactionstatusmsg{
+    string message=1;
+    int32 status=2;
+}
+
+message getsingletransactionmsg{
+    int32 transactionid=1;
+    string tokenstring=2;
+}
+
+message getalltransactionsmsg{
+    repeated Transactionmsg listtran=1;
+}
+
+
+service Transactionservice{
+    rpc Addtransaction(Transactionmsg) returns (transactionaddedmsg);
+    rpc Updatetransaction(Updatetransactionmsg) returns (transactionstatusmsg);
+    rpc Getalltransaction(getalltransactionsmsg) returns (getalltransactionsmsg); //input kei dinai parni vayae ra matrai dya ho 
+    rpc Getsingletransaction(getsingletransactionmsg) returns (Transactionmsg);
+    rpc deletetransaction(Deletetransactionmsg) returns (transactionstatusmsg);
+
+}

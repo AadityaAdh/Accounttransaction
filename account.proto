@@ -1,0 +1,62 @@
+syntax="proto3";
+
+package accounttransaction;
+
+option go_package = "/protogen";
+
+
+
+message Accountmsg{
+    int32 account_id=1;
+    int32 balance=2;
+    string owner=3;
+    string status=4;
+
+
+}
+
+message Updateaccountmsg{
+    int32 account_id=1;
+    string tokenstring=5;
+
+    optional int32 balance=2;
+    optional string owner=3;
+    optional string status=4;
+
+}
+
+
+message Deleteaccountmsg{
+    int32 account_id=1;
+    string tokenstring=2;
+
+}
+
+message accountaddedmsg{
+    string tokenstring=1;
+    string message=2;
+}
+
+message statusmsg{
+    string message=1;
+    int32 status=2;
+}
+
+message getsingleaccmsg{
+    int32 account_id=1;
+    string tokenstring=2;
+}
+
+message getallaccountsmsg{
+    repeated Accountmsg listaccs=1;
+}
+
+
+service Accountservice{
+    rpc Addaccount(Accountmsg) returns (accountaddedmsg);
+    rpc Updateaccount(Updateaccountmsg) returns (statusmsg);
+    rpc Getallaccounts(getallaccountsmsg) returns (getallaccountsmsg); //input kei dinai parni vayae ra matrai dya ho 
+    rpc Getsingleaccounts(getsingleaccmsg) returns (Accountmsg);
+    rpc deleteaccount(Deleteaccountmsg) returns (statusmsg);
+
+}
