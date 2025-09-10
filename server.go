@@ -182,7 +182,7 @@ func (s *server) Deleteaccount(ctx context.Context,req *protogen.Deleteaccountms
 
 type server struct{
 	protogen.UnimplementedAccountserviceServer
-	//tyo getsingle post empty wala xa , dekhako matra raixa error chalxa
+	//tyo getsingle post empty wala xa embed vaa xa yo unimplemented wala  , dekhako matra raixa error chalxa
 }
 
 func main(){
