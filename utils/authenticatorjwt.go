@@ -4,11 +4,12 @@ package utils
 import(
 	"github.com/golang-jwt/jwt/v5"
 	"fmt"
+	"os"
 )
 
 
 
-var secretkey = []byte("aadityaadhikari")
+var secretkey = []byte(os.Getenv("secret_key"))
 
 
 func Generatetoken(name string)(string,error){
