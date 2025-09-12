@@ -7,10 +7,14 @@ import (
 	"gorm.io/gorm"
 )
 
+type Accountrepo struct{
+	Db *gorm.DB
+}
 
-func Addaccount(account Account,db *gorm.DB)error{
 
-	result:=db.Create(&account)
+func (ar Accountrepo) Addaccount(account Account)error{
+
+	result:=ar.Db.Create(&account)
 
 	if result.Error!=nil{
 		return result.Error
@@ -26,8 +30,8 @@ func Addaccount(account Account,db *gorm.DB)error{
 
 }
 
-func Updateaccount(account Account,db *gorm.DB)(error){
-	existingaccount,err:=Getaccount(account.Accountid,db)
+func (ar Accountrepo) Updateaccount(account Account)(error){
+	existingaccount,err:=ar.Getaccount(account.Accountid)
 
 	if err!=nil{
 		return errors.New("could not even fetch the single row with this id let along update")
@@ -52,7 +56,7 @@ func Updateaccount(account Account,db *gorm.DB)(error){
 
 	fmt.Print(existingaccount)
 
-	result:=db.Model(&existingaccount).Where("accountid=?",existingaccount.Accountid).Updates(existingaccount)
+	result:=ar.Db.Model(&existingaccount).Where("accountid=?",existingaccount.Accountid).Updates(existingaccount)
 
 
 	
@@ -70,10 +74,10 @@ func Updateaccount(account Account,db *gorm.DB)(error){
 
 
 
-func Getallaccount(db *gorm.DB)([]Account,error){
+func (ar Accountrepo) Getallaccount()([]Account,error){
 	var accounts []Account
 
-	result:=db.Find(&accounts)
+	result:=ar.Db.Find(&accounts)
 
 	if result.Error!=nil{
 		return accounts,result.Error
@@ -83,10 +87,10 @@ func Getallaccount(db *gorm.DB)([]Account,error){
 
 }
 
-func Getaccount(accountid int32,db *gorm.DB)(Account,error){
+func (ar Accountrepo) Getaccount(accountid int32)(Account,error){
 
 	var account=Account{}
-	result:=db.First(&account,"accountid=?",accountid)
+	result:=ar.Db.First(&account,"accountid=?",accountid)
 
 	if result.Error!=nil{
 		return  account,result.Error
@@ -99,9 +103,9 @@ func Getaccount(accountid int32,db *gorm.DB)(Account,error){
 }
 
 
-func Deleteaccount(accountid int32,db *gorm.DB)error{
+func (ar Accountrepo) Deleteaccount(accountid int32)error{
 	var account Account
-	result:=db.Where("accountid=?",accountid).Delete(&account)
+	result:=ar.Db.Where("accountid=?",accountid).Delete(&account)
 
 
 	if result.Error!=nil{

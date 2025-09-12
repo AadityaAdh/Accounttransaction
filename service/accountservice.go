@@ -4,15 +4,19 @@ import (
 	"acctraproject/protogen"
 	"acctraproject/repository"
 	"acctraproject/utils"
-
-	"gorm.io/gorm"
+	// "gorm.io/gorm"
 )
 
 
+type Accountservice struct{
+	Repo repository.Accountrepo
+}
 
-func Addaccountservice(account repository.Account,db *gorm.DB)(string,error){
 
-	err:=repository.Addaccount(account,db)
+
+func(s Accountservice) Addaccountservice(account repository.Account)(string,error){
+
+	err:=s.Repo.Addaccount(account)
 
 	if err!=nil{
 		return "",err
@@ -23,15 +27,15 @@ func Addaccountservice(account repository.Account,db *gorm.DB)(string,error){
 }
 
 
-func Updateaccountservice(account repository.Account,db *gorm.DB)error{
-	err:=repository.Updateaccount(account,db)
+func(s Accountservice) Updateaccountservice(account repository.Account)error{
+	err:=s.Repo.Updateaccount(account)
 	return err
 	//done
 }
 
 
-func Getallaccountservice(db *gorm.DB)(*protogen.Getallaccountsmsg,error){
-	accounts,err:=repository.Getallaccount(db)
+func (s Accountservice) Getallaccountservice()(*protogen.Getallaccountsmsg,error){
+	accounts,err:=s.Repo.Getallaccount()
 
 	if err!=nil{
 		return &protogen.Getallaccountsmsg{},err
@@ -60,14 +64,22 @@ func Getallaccountservice(db *gorm.DB)(*protogen.Getallaccountsmsg,error){
 	//done
 }
 
-func Getaccountservice(account repository.Account,db *gorm.DB)(repository.Account,error){
-	account,err:=repository.Getaccount(account.Accountid,db)
+func (s Accountservice) Getaccountservice(account repository.Account)(repository.Account,error){
+	account,err:=s.Repo.Getaccount(account.Accountid)
 	return account,err
 	//done
 }
 
-func Deleteaccountservice(accountid int32 ,db *gorm.DB)error{
-	err:=repository.Deleteaccount(accountid,db)
+func (s Accountservice) Deleteaccountservice(accountid int32)error{
+	err:=s.Repo.Deleteaccount(accountid)
 	return err
 	//done
+}
+
+
+func Returnnewaccountservice(repo repository.Accountrepo)Accountservice{
+	return Accountservice{Repo: repo}
+
+
+
 }

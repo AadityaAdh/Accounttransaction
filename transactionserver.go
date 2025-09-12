@@ -9,9 +9,9 @@ import (
 	tp "acctraproject/transactionprotogen"
 	"acctraproject/handler"
 )
-
+init
 func main(){
-	lis, err := net.Listen("tcp", ":50080")
+	lis, err := net.Listen("tcp", ":50081")
 
 	if err!=nil{
 		fmt.Print(err)

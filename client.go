@@ -18,7 +18,7 @@ func main(){
 
 	fmt.Println("Client has started ")
 
-	conn, err := grpc.Dial("localhost:50076", grpc.WithInsecure())
+	conn, err := grpc.Dial("localhost:50090", grpc.WithInsecure())
 	if err != nil {
 		fmt.Printf("Failed to connect: %v \n", err)
 	}

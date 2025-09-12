@@ -6,9 +6,16 @@ import (
 )
 
 
+type Database interface{
+	Connectdb() (*gorm.DB,error)
+}
 
-func Createdatabaseconnection(dbname string)(*gorm.DB,error){
-	db, err := gorm.Open(sqlite.Open(dbname), &gorm.Config{})
+type Sqlitedb struct{
+	Dbname string
+}
+
+func (s Sqlitedb) Connectdb()(*gorm.DB,error){
+	db, err := gorm.Open(sqlite.Open(s.Dbname), &gorm.Config{})
 
 	if err!=nil{
 		return db,err
@@ -16,3 +23,19 @@ func Createdatabaseconnection(dbname string)(*gorm.DB,error){
 	return db,nil
 
 }
+
+
+func Getdatabase(db Database)(*gorm.DB,error){
+	dbconn,err:=db.Connectdb()
+	if err!=nil{
+		return dbconn,err
+	}
+	return dbconn,err
+
+
+
+
+}
+
+
+

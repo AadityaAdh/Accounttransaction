@@ -14,24 +14,13 @@ import (
 
 type Server struct{
 	protogen.UnimplementedAccountserviceServer
+
+	Service service.Accountservice
 }
 
 var db *gorm.DB
 
-func init(){
-	var err error
-	db,err=repository.Createdatabaseconnection("mydb1.db")
-	if err!=nil{
-		fmt.Print("Could not create db connection")
-	}
-	err=repository.Createtableifnotexists(db)
 
-	if err!=nil{
-		fmt.Print("could not create the table")
-	}
-
-
-}
 
 func converter(req *protogen.Accountmsg)repository.Account{
 	
@@ -83,7 +72,7 @@ func (s *Server) Addaccount(ctx context.Context,req *protogen.Accountmsg) (*prot
 	account:=converter(req)
 
 	
-	tokenstring,err:=service.Addaccountservice(account,db)
+	tokenstring,err:=s.Service.Addaccountservice(account)
 
 	if err!=nil{
 
@@ -106,7 +95,7 @@ func (s *Server) Updateaccount(ctx context.Context,req *protogen.Updateaccountms
 
 	account:=optionconverter(req)
 
-	err:=service.Updateaccountservice(account,db)
+	err:=s.Service.Updateaccountservice(account)
 
 	if err!=nil{
 		return &protogen.Statusmsg{Status: 400,Message: "Update Unsucessful"},err
@@ -124,7 +113,7 @@ func (s *Server) Updateaccount(ctx context.Context,req *protogen.Updateaccountms
 
 func (s *Server) Getallaccounts(ctx context.Context,req *protogen.Getallaccountsmsg) (*protogen.Getallaccountsmsg, error){
 
-	getaccountmsg,err:=service.Getallaccountservice(db)
+	getaccountmsg,err:=s.Service.Getallaccountservice()
 
 	if err!=nil{
 		return &protogen.Getallaccountsmsg{},err
@@ -150,7 +139,7 @@ func (s *Server) Getallaccounts(ctx context.Context,req *protogen.Getallaccounts
 
 
 func (s *Server) Deleteaccount(ctx context.Context,req *protogen.Deleteaccountmsg) (*protogen.Statusmsg, error){
-	err:=service.Deleteaccountservice(req.AccountId,db)
+	err:=s.Service.Deleteaccountservice(req.AccountId)
 
 	if err!=nil{
 		return &protogen.Statusmsg{Status: 400,Message: "delete unsucess"},err

@@ -19,5 +19,9 @@ protoc --go_out=. --go-grpc_out=. account.proto
 go get github.com/joho/godotenv
 
 
+go get github.com/labstack/echo/v4
+
+
+
 
 
